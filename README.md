@@ -6,7 +6,7 @@
 
 CRUD de usuários em GraphQL utilizando NestJS, TypeORM e MySQL.
 
-A arquitetura do projeto foi criada a partir da CLI do NestJS.
+Os usuários possuem seus dados de nome, email e senha junto com possíveis configurações da sua conta em um sistema. Essa configuração é armazenada no banco de dados através de um relacionamento um-para-um. A arquitetura do projeto foi criada a partir da CLI do NestJS.
 
 ## Instalação / Execução
 
