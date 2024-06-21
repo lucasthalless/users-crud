@@ -1,12 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { users } from '../mocks/users_mock';
+import { users } from '../mocks/users.mock';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
 
 @Injectable()
 export class UserService {
   create(createUserInput: CreateUserInput) {
-    return 'This action adds a new user';
+    const newUser = { ...createUserInput, id: users.length + 1 };
+    users.push(newUser);
+    return newUser;
   }
 
   findAll() {

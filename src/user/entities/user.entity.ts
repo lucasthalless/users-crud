@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { UserSettings } from './user-settings.entity';
 
 @ObjectType()
 export class User {
@@ -13,4 +14,7 @@ export class User {
 
   @Field()
   password: string;
+
+  @Field({ nullable: true })
+  settings?: UserSettings;
 }
