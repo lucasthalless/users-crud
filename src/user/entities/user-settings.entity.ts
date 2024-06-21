@@ -1,10 +1,12 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryColumn } from 'typeorm';
+import { User } from './user.entity';
 
 @Entity({ name: 'user_settings' })
 @ObjectType()
 export class UserSettings {
   @PrimaryColumn()
+  @OneToOne(() => User)
   @Field(() => Int)
   userId: number;
 

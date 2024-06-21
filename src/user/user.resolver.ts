@@ -39,13 +39,17 @@ export class UserResolver {
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
   ) {
     await this.userService.update(id, updateUserInput);
-    const updatedUser = { id, updateUserInput };
-    console.log(updatedUser);
+    const updatedUser = {
+      id,
+      ...updateUserInput,
+      settings: this.userSettingsService.findOne(id),
+    };
     return updatedUser;
   }
 
-  @Mutation(() => User, { nullable: true })
+  @Mutation(() => Boolean)
   async removeUser(@Args('id', { type: () => Int }) id: number) {
     await this.userService.remove(id);
+    return true;
   }
 }

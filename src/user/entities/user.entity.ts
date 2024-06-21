@@ -27,7 +27,9 @@ export class User {
   @Field()
   password: string;
 
-  @OneToOne(() => UserSettings, { onDelete: 'CASCADE' })
+  @OneToOne(() => UserSettings, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'settings' })
   @Field({ nullable: true })
   settings?: UserSettings;
