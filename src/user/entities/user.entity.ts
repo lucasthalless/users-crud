@@ -1,20 +1,34 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { UserSettings } from './user-settings.entity';
 
+@Entity({ name: 'user' })
 @ObjectType()
 export class User {
+  @PrimaryGeneratedColumn()
   @Field(() => Int)
   id: number;
 
+  @Column()
   @Field()
   name: string;
 
+  @Column()
   @Field()
   email: string;
 
+  @Column()
   @Field()
   password: string;
 
+  @OneToOne(() => UserSettings)
+  @JoinColumn()
   @Field({ nullable: true })
   settings?: UserSettings;
 }

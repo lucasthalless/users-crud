@@ -1,27 +1,16 @@
-import {
-  Args,
-  Int,
-  Mutation,
-  Parent,
-  Query,
-  ResolveField,
-  Resolver,
-} from '@nestjs/graphql';
-import { userSettings } from 'src/mocks/user-settings.mock';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import { UserSettings } from './entities/user-settings.entity';
 import { User } from './entities/user.entity';
+import { UserSettingsService } from './user-settings.service';
 import { UserService } from './user.service';
 
 @Resolver((of) => User)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
-
-  @Mutation((returns) => User)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.userService.create(createUserInput);
-  }
+  constructor(
+    private readonly userService: UserService,
+    private userSettingsService: UserSettingsService,
+  ) {}
 
   @Query(() => [User], { name: 'getUsers', nullable: true })
   findAll() {
@@ -33,9 +22,14 @@ export class UserResolver {
     return this.userService.findOne(id);
   }
 
-  @ResolveField(() => UserSettings, { name: 'settings', nullable: true })
-  getUserSettings(@Parent() user: User) {
-    return userSettings.find((userSettings) => userSettings.userId === user.id);
+  // @ResolveField(() => UserSettings, { name: 'settings', nullable: true })
+  // getUserSettings(@Parent() user: User) {
+  //   return this.userSettingsService.findOne(user.id);
+  // }
+
+  @Mutation((returns) => User)
+  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
+    return this.userService.create(createUserInput);
   }
 
   @Mutation(() => User)
