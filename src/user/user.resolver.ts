@@ -5,7 +5,7 @@ import { User } from './entities/user.entity';
 import { UserSettingsService } from './user-settings.service';
 import { UserService } from './user.service';
 
-@Resolver((of) => User)
+@Resolver(() => User)
 export class UserResolver {
   constructor(
     private readonly userService: UserService,
@@ -22,23 +22,30 @@ export class UserResolver {
     return this.userService.findOne(id);
   }
 
+  // resolve settings field (not needed with typeorm relations handler)
   // @ResolveField(() => UserSettings, { name: 'settings', nullable: true })
   // getUserSettings(@Parent() user: User) {
   //   return this.userSettingsService.findOne(user.id);
   // }
 
-  @Mutation((returns) => User)
+  @Mutation(() => User)
   createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
     return this.userService.create(createUserInput);
   }
 
   @Mutation(() => User)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
-    return this.userService.update(updateUserInput.id, updateUserInput);
+  async updateUser(
+    @Args('id') id: number,
+    @Args('updateUserInput') updateUserInput: UpdateUserInput,
+  ) {
+    await this.userService.update(id, updateUserInput);
+    const updatedUser = { id, updateUserInput };
+    console.log(updatedUser);
+    return updatedUser;
   }
 
-  @Mutation(() => User)
-  removeUser(@Args('id', { type: () => Int }) id: number) {
-    return this.userService.remove(id);
+  @Mutation(() => User, { nullable: true })
+  async removeUser(@Args('id', { type: () => Int }) id: number) {
+    await this.userService.remove(id);
   }
 }

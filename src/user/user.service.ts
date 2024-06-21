@@ -27,11 +27,18 @@ export class UserService {
     });
   }
 
+  findOneByEmail(email: string) {
+    return this.userRepository.findOne({
+      where: { email },
+      relations: ['settings'],
+    });
+  }
+
   update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+    this.userRepository.update({ id }, { ...updateUserInput });
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    this.userRepository.delete({ id });
   }
 }

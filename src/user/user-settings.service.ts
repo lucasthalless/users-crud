@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserSettingsInput } from './dto/create-user-settings.input';
+import { UpdateUserSettingsInput } from './dto/update-user-settings.input';
 import { UserSettings } from './entities/user-settings.entity';
 import { User } from './entities/user.entity';
 
@@ -32,5 +33,12 @@ export class UserSettingsService {
 
   findOne(userId: number) {
     return this.userSettingsRepository.findOneBy({ userId });
+  }
+
+  update(userId: number, updateUserSettingsInput: UpdateUserSettingsInput) {
+    this.userSettingsRepository.update(
+      { userId },
+      { ...updateUserSettingsInput },
+    );
   }
 }
