@@ -23,7 +23,7 @@ npm install
 npm run start:dev
 ```
 
-e a API vai estar disponível junto com o banco de dados populado na porta [:3000](http://localhost:3000/).
+e a API vai estar disponível na porta [:3000](http://localhost:3000/).
 
 Para conseguir o token de autenticação para testar a API, utilize a rota POST [**/auth/signup**](localhost:3000/auth/signup) para criar uma conta, enviando os dados "name", "email" e "password" no Body x-www-form-urlencoded do Request.
 Após isso basta logar com seu "email" e "password" no Body x-www-form-urlencoded do Request na rota [**auth/signin**](localhost:3000/auth/signin) e ela retornará o token jwt.
