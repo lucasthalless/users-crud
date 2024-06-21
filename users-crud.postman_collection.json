@@ -1,0 +1,47 @@
+{
+	"info": {
+		"_postman_id": "8a210234-b56a-4692-acec-c30c7954e216",
+		"name": "users-crud",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "23882754"
+	},
+	"item": [
+		{
+			"name": "localhost:3000/auth/signin",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "joao",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "changeme",
+							"type": "text"
+						}
+					]
+				},
+				"url": "localhost:3000/auth/login"
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/auth/signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"joao\"\n    \"password\": \"152\"\n    \"email\": \"joao@gotmail.com\"\n}"
+				},
+				"url": "localhost:3000/auth/signup"
+			},
+			"response": []
+		}
+	]
+}
