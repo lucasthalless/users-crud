@@ -28,6 +28,8 @@ e a API vai estar disponível junto com o banco de dados populado na porta [:300
 Para conseguir o token de autenticação para testar a API, utilize a rota POST [**/auth/signup**](localhost:3000/auth/signup) para criar uma conta, enviando os dados "name", "email" e "password" no Body x-www-form-urlencoded do Request.
 após isso basta logar com seu "email" e "password" no Body x-www-form-urlencoded do Request na rota [**auth/signin**](localhost:3000/auth/signin) e ela retornará o token jwt.
 
+disponibilizei uma collection do Postman para facilitar todo esse processo [aqui](https://github.com/lucasthalless/users-crud/blob/main/users-crud.postman_collection.json)
+
 utilize a rota [/graphql](http://localhost:3000/graphql) para testar as querys e mutations, com o header authorization: "Bearer *seu-token-jwt*".
 <!-- ## Testes
 
