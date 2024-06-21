@@ -27,6 +27,7 @@ export class User {
   @Field()
   password: string;
 
+  // TODO: fix usersettings cascade delete.
   @OneToOne(() => UserSettings, {
     onDelete: 'CASCADE',
   })
