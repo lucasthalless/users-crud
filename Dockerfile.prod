@@ -1,0 +1,19 @@
+# Dockerfile for production environment
+
+FROM node:20.5.1
+
+WORKDIR /usr/src/api
+
+COPY . .
+
+COPY ./.env.production ./.env
+
+RUN npm install --quiet --no-optional --no-fund --loglevel=error
+
+RUN npm run build
+
+RUN rm -rf ./src
+
+EXPOSE 3001
+
+CMD ["npm", "run", "start:prod"]
