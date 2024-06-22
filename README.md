@@ -31,6 +31,108 @@ Após isso basta logar com seu "email" e "password" no Body x-www-form-urlencode
 Disponibilizei uma collection do Postman com tudo isso pronto para facilitar esse processo [aqui](https://github.com/lucasthalless/users-crud/blob/main/users-crud.postman_collection.json) :)
 
 Utilize a rota [/graphql](http://localhost:3000/graphql) para testar as querys e mutations, com o header authorization: "Bearer *seu-token-jwt*".
+
+<details> 
+<summary> Queries e Mutations ↴</summary>
+<br>
+
+- getUsers
+```
+{
+	getUsers {
+    id
+    name
+    email
+    settings {
+      userId
+      receiveEmails
+      receiveNotifications
+    }
+  }
+}
+```
+
+- getUser
+```
+{
+  getUser(id: 1) {
+    id
+    name
+    email
+    password
+    settings {
+      userId
+      receiveEmails
+      receiveNotifications
+    }
+  }
+}
+```
+
+- createUser
+```
+mutation {
+  createUser (createUserInput: {name: "maria", email: "maria@gmail.com", password: "m4r14"}){
+    id
+    name
+    email
+    password
+    settings {
+      userId
+      receiveEmails
+      receiveNotifications
+    }
+  }
+}
+```
+
+- updateUser
+```
+mutation {
+  updateUser (id: 1, updateUserInput: {name:"maria", email: "maria@gmail.com", password:"maria123"}){
+    id
+    name
+    email
+    password
+    settings {
+      userId
+      receiveEmails
+      receiveNotifications
+    }
+  }
+}
+```
+
+- removeUser
+```
+mutation {
+  removeUser (id: 1)
+}
+```
+
+- createUserSettings
+```
+mutation {
+  createUserSettings (createUserSettingsInput: {userId: 22, receiveEmails: false, receiveNotifications: true}) {
+    userId
+    receiveEmails
+    receiveNotifications
+  }
+}
+```
+
+- updateUserSettings
+```
+mutation {
+  updateUserSettings (userId: 22, updateUserSettingsInput: {receiveEmails: true, receiveNotifications: true}) {
+    userId
+    receiveEmails
+    receiveNotifications
+  }
+}
+```
+
+</details>
 <!-- ## Testes
 
 ```bash
