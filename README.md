@@ -144,4 +144,15 @@ $ npm run test:e2e
 
 # test coverage
 $ npm run test:cov
-``` -->
+```
+-->
+
+## Requisitos / To do
+
+- [x] Api Graphql com NestJS
+- [x] Crud de Usuarios (com Graphql)
+- [x] Rota Rest para autenticação
+- [x] Estruturação de entity e db com typeorm
+- [ ] Imagem Docker
+- [ ] Testes com Jest
+- [ ] Paginação, Filtros e Ordenacão na Query Graphql
