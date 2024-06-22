@@ -12,15 +12,8 @@ Os usuários possuem seus dados de nome, email e senha junto com possíveis conf
 
 Clone esse repositório e dentro dele execute:
 
-```shell
-docker-compose up
 ```
-
-Após o docker iniciar o banco de dados MySQL, em outro terminal execute os comandos:
-
-```shell
-npm install
-npm run start:dev
+docker-compose -f docker-compose.yaml up --build
 ```
 
 e a API vai estar disponível na porta [:3000](http://localhost:3000/).
@@ -134,13 +127,17 @@ mutation {
 
 </details>
 
+## Docker
+
+A API foi dockerizada para os ambientes de produção e de desenvolvimento, utilizando Dockerfiles e docker-composes.
+
 ## Requisitos / To do
 
 - [x] Api Graphql com NestJS
 - [x] Crud de Usuarios (com Graphql)
 - [x] Rota Rest para autenticação
 - [x] Estruturação de entity e db com typeorm
-- [ ] Imagem Docker
+- [x] Imagem Docker
 - [ ] Testes com Jest
 - [ ] Paginação, Filtros e Ordenacão na Query Graphql
 
