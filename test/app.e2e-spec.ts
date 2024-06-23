@@ -1,8 +1,19 @@
 import { INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { print } from 'graphql';
 import * as request from 'supertest';
 import { DataSource } from 'typeorm';
 import { AppModule } from '../src/app.module';
+import {
+  createUserMutation,
+  createUserSettings,
+  getUser,
+  getUserWithoutSettings,
+  getUsersWithoutSettings,
+  removeUser,
+  updateUser,
+  updateUserSettings,
+} from '../src/graphql/queries';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -30,7 +41,7 @@ describe('AppController (e2e)', () => {
     it('should be unauthorized to query getUsers', () => {
       return request(app.getHttpServer())
         .post('/graphql')
-        .send({ query: '{ getUsers { id name email password }}' })
+        .send({ query: print(getUsersWithoutSettings) })
         .expect((res) => {
           expect(res.body.data.getUsers).toBeNull();
           expect(res.body.errors).not.toBeNull();
@@ -66,7 +77,7 @@ describe('AppController (e2e)', () => {
       return request(app.getHttpServer())
         .post('/graphql')
         .set('Authorization', access_token)
-        .send({ query: '{ getUsers { id name email password }}' })
+        .send({ query: print(getUsersWithoutSettings) })
         .expect((res) => {
           expect(res.body.data.getUsers).toHaveLength(1);
         });
@@ -79,8 +90,9 @@ describe('AppController (e2e)', () => {
         .post('/graphql')
         .set('Authorization', access_token)
         .send({
-          query:
-            'mutation {createUser(createUserInput: {name: "maria" email: "maria@email.com" password: "maria123"}) { id name email password }}',
+          query: print(
+            createUserMutation('maria', 'maria@email.com', 'maria123'),
+          ),
         })
         .expect(200)
         .expect((res) => {
@@ -99,7 +111,7 @@ describe('AppController (e2e)', () => {
       return request(app.getHttpServer())
         .post('/graphql')
         .set('Authorization', access_token)
-        .send({ query: '{ getUsers { id name email password }}' })
+        .send({ query: print(getUsersWithoutSettings) })
         .expect((res) => {
           expect(res.body.data.getUsers).toHaveLength(2);
         });
@@ -111,7 +123,7 @@ describe('AppController (e2e)', () => {
       return request(app.getHttpServer())
         .post('/graphql')
         .set('Authorization', access_token)
-        .send({ query: '{ getUser(id: 2) { id name email password }}' })
+        .send({ query: print(getUserWithoutSettings(2)) })
         .expect((res) => {
           expect(res.body.data.getUser).toEqual({
             id: 2,
@@ -129,8 +141,7 @@ describe('AppController (e2e)', () => {
         .post('/graphql')
         .set('Authorization', access_token)
         .send({
-          query:
-            'mutation {createUserSettings(createUserSettingsInput: {userId: 2 receiveEmails: true, receiveNotifications: false}) { userId receiveEmails receiveNotifications }}',
+          query: print(createUserSettings(2, true, false)),
         })
         .expect(200)
         .expect((res) => {
@@ -149,8 +160,7 @@ describe('AppController (e2e)', () => {
         .post('/graphql')
         .set('Authorization', access_token)
         .send({
-          query:
-            '{ getUser(id: 2) { id name email password settings { userId receiveEmails receiveNotifications } }}',
+          query: print(getUser(2)),
         })
         .expect((res) => {
           expect(res.body.data.getUser).toEqual({
@@ -175,8 +185,7 @@ describe('AppController (e2e)', () => {
         .post('/graphql')
         .set('Authorization', access_token)
         .send({
-          query:
-            'mutation {updateUserSettings(userId: 2, updateUserSettingsInput: {receiveEmails: false, receiveNotifications: true}) { userId receiveEmails receiveNotifications }}',
+          query: print(updateUserSettings(2, false, true)),
         })
         .expect(200)
         .expect((res) => {
@@ -195,8 +204,7 @@ describe('AppController (e2e)', () => {
         .post('/graphql')
         .set('Authorization', access_token)
         .send({
-          query:
-            '{ getUser(id: 2) { id name email password settings { userId receiveEmails receiveNotifications } }}',
+          query: print(getUser(2)),
         })
         .expect((res) => {
           expect(res.body.data.getUser).toEqual({
@@ -220,8 +228,7 @@ describe('AppController (e2e)', () => {
         .post('/graphql')
         .set('Authorization', access_token)
         .send({
-          query:
-            'mutation {updateUser(id: 2, updateUserInput: {name:"maria", email: "maria@gmail.com", password:"m4r14"}) { id name email password settings { userId receiveEmails receiveNotifications }} }',
+          query: print(updateUser(2, 'maria', 'maria@gmail.com', 'm4r14')),
         })
         .expect(200)
         .expect((res) => {
@@ -246,7 +253,7 @@ describe('AppController (e2e)', () => {
         .post('/graphql')
         .set('Authorization', access_token)
         .send({
-          query: 'mutation {removeUser (id: 2)}',
+          query: print(removeUser(2)),
         })
         .expect(200)
         .expect((res) => {
@@ -260,7 +267,7 @@ describe('AppController (e2e)', () => {
       return request(app.getHttpServer())
         .post('/graphql')
         .set('Authorization', access_token)
-        .send({ query: '{ getUsers { id name email password }}' })
+        .send({ query: print(getUsersWithoutSettings) })
         .expect((res) => {
           expect(res.body.data.getUsers).toHaveLength(1);
         });
