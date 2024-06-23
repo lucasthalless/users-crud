@@ -6,6 +6,7 @@ import { AppModule } from '../src/app.module';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
+  let access_token = 'Bearer ';
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -26,12 +27,48 @@ describe('AppController (e2e)', () => {
   });
 
   describe('getUsers', () => {
-    it('should query getUsers and return 0 users', () => {
+    it('should be unauthorized to query getUsers', () => {
       return request(app.getHttpServer())
         .post('/graphql')
         .send({ query: '{ getUsers { id name email password }}' })
         .expect((res) => {
-          expect(res.body.data.getUsers).toHaveLength(0);
+          expect(res.body.data.getUsers).toBeNull();
+          expect(res.body.errors).not.toBeNull();
+          expect(res.body.errors[0].message).toBe('Unauthorized');
+        });
+    });
+  });
+
+  describe('signup', () => {
+    it('should be able to post /signup and create a new user', () => {
+      return request(app.getHttpServer())
+        .post('/auth/signup')
+        .send({ name: 'joao', password: '152', email: 'joao@gotmail.com' })
+        .expect(200);
+    });
+  });
+
+  describe('signin', () => {
+    it('should be able to post /signin and receive a jwt access token', () => {
+      return request(app.getHttpServer())
+        .post('/auth/signin')
+        .send({ password: '152', email: 'joao@gotmail.com' })
+        .expect(200)
+        .expect((res) => {
+          expect(typeof res.body.access_token === 'string').toBe(true);
+          access_token += res.body.access_token;
+        });
+    });
+  });
+
+  describe('getUsers', () => {
+    it('should query getUsers and return 1 users', () => {
+      return request(app.getHttpServer())
+        .post('/graphql')
+        .set('Authorization', access_token)
+        .send({ query: '{ getUsers { id name email password }}' })
+        .expect((res) => {
+          expect(res.body.data.getUsers).toHaveLength(1);
         });
     });
   });
@@ -40,6 +77,7 @@ describe('AppController (e2e)', () => {
     it('should create a user using createUser mutation', () => {
       return request(app.getHttpServer())
         .post('/graphql')
+        .set('Authorization', access_token)
         .send({
           query:
             'mutation {createUser(createUserInput: {name: "maria" email: "maria@email.com" password: "maria123"}) { id name email password }}',
@@ -47,7 +85,7 @@ describe('AppController (e2e)', () => {
         .expect(200)
         .expect((res) => {
           expect(res.body.data.createUser).toEqual({
-            id: 1,
+            id: 2,
             name: 'maria',
             email: 'maria@email.com',
             password: 'maria123',
@@ -57,24 +95,26 @@ describe('AppController (e2e)', () => {
   });
 
   describe('getUsers', () => {
-    it('should query getUsers and return 1 users', () => {
+    it('should query getUsers and return 2 users', () => {
       return request(app.getHttpServer())
         .post('/graphql')
+        .set('Authorization', access_token)
         .send({ query: '{ getUsers { id name email password }}' })
         .expect((res) => {
-          expect(res.body.data.getUsers).toHaveLength(1);
+          expect(res.body.data.getUsers).toHaveLength(2);
         });
     });
   });
 
   describe('getUser', () => {
-    it('should query getUser and return all data from the user with id 1', () => {
+    it('should query getUser and return all data from the user with id 2', () => {
       return request(app.getHttpServer())
         .post('/graphql')
-        .send({ query: '{ getUser(id: 1) { id name email password }}' })
+        .set('Authorization', access_token)
+        .send({ query: '{ getUser(id: 2) { id name email password }}' })
         .expect((res) => {
           expect(res.body.data.getUser).toEqual({
-            id: 1,
+            id: 2,
             name: 'maria',
             email: 'maria@email.com',
             password: 'maria123',
@@ -87,14 +127,15 @@ describe('AppController (e2e)', () => {
     it('should create a user setting using createUserSettings mutation', () => {
       return request(app.getHttpServer())
         .post('/graphql')
+        .set('Authorization', access_token)
         .send({
           query:
-            'mutation {createUserSettings(createUserSettingsInput: {userId: 1 receiveEmails: true, receiveNotifications: false}) { userId receiveEmails receiveNotifications }}',
+            'mutation {createUserSettings(createUserSettingsInput: {userId: 2 receiveEmails: true, receiveNotifications: false}) { userId receiveEmails receiveNotifications }}',
         })
         .expect(200)
         .expect((res) => {
           expect(res.body.data.createUserSettings).toEqual({
-            userId: 1,
+            userId: 2,
             receiveEmails: true,
             receiveNotifications: false,
           });
@@ -103,21 +144,22 @@ describe('AppController (e2e)', () => {
   });
 
   describe('getUser', () => {
-    it('should query getUser and return all data from the user with id 1 including user settings', () => {
+    it('should query getUser and return all data from the user with id 2 including user settings', () => {
       return request(app.getHttpServer())
         .post('/graphql')
+        .set('Authorization', access_token)
         .send({
           query:
-            '{ getUser(id: 1) { id name email password settings { userId receiveEmails receiveNotifications } }}',
+            '{ getUser(id: 2) { id name email password settings { userId receiveEmails receiveNotifications } }}',
         })
         .expect((res) => {
           expect(res.body.data.getUser).toEqual({
-            id: 1,
+            id: 2,
             name: 'maria',
             email: 'maria@email.com',
             password: 'maria123',
             settings: {
-              userId: 1,
+              userId: 2,
               receiveEmails: true,
               receiveNotifications: false,
             },
@@ -126,18 +168,20 @@ describe('AppController (e2e)', () => {
     });
   });
 
+  // TODO: fix test expected return
   describe('updateUserSettings', () => {
     it('should update a user setting using updateUserSettings mutation', () => {
       return request(app.getHttpServer())
         .post('/graphql')
+        .set('Authorization', access_token)
         .send({
           query:
-            'mutation {updateUserSettings(userId: 1, updateUserSettingsInput: {receiveEmails: false, receiveNotifications: true}) { userId receiveEmails receiveNotifications }}',
+            'mutation {updateUserSettings(userId: 2, updateUserSettingsInput: {receiveEmails: false, receiveNotifications: true}) { userId receiveEmails receiveNotifications }}',
         })
         .expect(200)
         .expect((res) => {
           expect(res.body.data.updateUserSettings).toEqual({
-            userId: 1,
+            userId: 2,
             receiveEmails: false,
             receiveNotifications: true,
           });
@@ -146,21 +190,22 @@ describe('AppController (e2e)', () => {
   });
 
   describe('getUser', () => {
-    it('should query getUser and return all data from the user with id 1 including user settings updated', () => {
+    it('should query getUser and return all data from the user with id 2 including user settings updated', () => {
       return request(app.getHttpServer())
         .post('/graphql')
+        .set('Authorization', access_token)
         .send({
           query:
-            '{ getUser(id: 1) { id name email password settings { userId receiveEmails receiveNotifications } }}',
+            '{ getUser(id: 2) { id name email password settings { userId receiveEmails receiveNotifications } }}',
         })
         .expect((res) => {
           expect(res.body.data.getUser).toEqual({
-            id: 1,
+            id: 2,
             name: 'maria',
             email: 'maria@email.com',
             password: 'maria123',
             settings: {
-              userId: 1,
+              userId: 2,
               receiveEmails: false,
               receiveNotifications: true,
             },
@@ -173,19 +218,20 @@ describe('AppController (e2e)', () => {
     it('should update a user using updateUser mutation', () => {
       return request(app.getHttpServer())
         .post('/graphql')
+        .set('Authorization', access_token)
         .send({
           query:
-            'mutation {updateUser(id: 1, updateUserInput: {name:"maria", email: "maria@gmail.com", password:"m4r14"}) { id name email password settings { userId receiveEmails receiveNotifications }} }',
+            'mutation {updateUser(id: 2, updateUserInput: {name:"maria", email: "maria@gmail.com", password:"m4r14"}) { id name email password settings { userId receiveEmails receiveNotifications }} }',
         })
         .expect(200)
         .expect((res) => {
           expect(res.body.data.updateUser).toEqual({
-            id: 1,
+            id: 2,
             name: 'maria',
             email: 'maria@gmail.com',
             password: 'm4r14',
             settings: {
-              userId: 1,
+              userId: 2,
               receiveEmails: false,
               receiveNotifications: true,
             },
@@ -198,8 +244,9 @@ describe('AppController (e2e)', () => {
     it('should remove a user using removeUser mutation', () => {
       return request(app.getHttpServer())
         .post('/graphql')
+        .set('Authorization', access_token)
         .send({
-          query: 'mutation {removeUser (id: 1)}',
+          query: 'mutation {removeUser (id: 2)}',
         })
         .expect(200)
         .expect((res) => {
@@ -209,12 +256,13 @@ describe('AppController (e2e)', () => {
   });
 
   describe('getUsers', () => {
-    it('should query getUsers and return 0 users', () => {
+    it('should query getUsers and return 1 users', () => {
       return request(app.getHttpServer())
         .post('/graphql')
+        .set('Authorization', access_token)
         .send({ query: '{ getUsers { id name email password }}' })
         .expect((res) => {
-          expect(res.body.data.getUsers).toHaveLength(0);
+          expect(res.body.data.getUsers).toHaveLength(1);
         });
     });
   });
