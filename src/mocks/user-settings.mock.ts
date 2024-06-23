@@ -1,4 +1,4 @@
-import { UserSettings } from 'src/user/entities/user-settings.entity';
+import { UserSettings } from '../user/entities/user-settings.entity';
 
 export const userSettings: UserSettings[] = [
   {
