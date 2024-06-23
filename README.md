@@ -131,6 +131,16 @@ mutation {
 
 A API foi dockerizada para os ambientes de produção e de desenvolvimento, utilizando Dockerfiles e docker-composes.
 
+
+## Testes
+
+A aplicação possui testes end-2-end, que podem ser executados com o seguinte comando:
+
+```bash
+# e2e tests
+$ npm run test:e2e
+```
+
 ## Requisitos / To do
 
 - [x] Api Graphql com NestJS
@@ -138,18 +148,5 @@ A API foi dockerizada para os ambientes de produção e de desenvolvimento, util
 - [x] Rota Rest para autenticação
 - [x] Estruturação de entity e db com typeorm
 - [x] Imagem Docker
-- [ ] Testes com Jest
+- [x] Testes com Jest
 - [ ] Paginação, Filtros e Ordenacão na Query Graphql
-
-<!-- ## Testes
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-``` -->
