@@ -10,7 +10,7 @@ import { UserModule } from './user/user.module';
 const MYSQL_DATABASE =
   process.env.NODE_ENV === 'test' ? 'MYSQL_TEST_DATABASE' : 'MYSQL_DATABASE';
 const MYSQL_HOST =
-  process.env.NODE_ENV === 'test' ? 'MYSQL_TEST_HOST' : 'MYSQL_T';
+  process.env.NODE_ENV === 'test' ? 'MYSQL_TEST_HOST' : 'MYSQL_HOST';
 
 @Module({
   imports: [
