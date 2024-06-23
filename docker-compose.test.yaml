@@ -4,4 +4,4 @@ services:
     env_file:
       - .env.test
     ports:
-      - '3306:3306'
+      - '3307:3306'
