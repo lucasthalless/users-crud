@@ -1,9 +1,12 @@
 node_modules
-.env
+.env.test
 dist
 test
 .git
 .gitignore
 prettierrc
 Dockerfile
+Dockerfile.prod
+docker-compose.yaml
+docker-compose.test.yaml
 README.md
