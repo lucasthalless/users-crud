@@ -18,9 +18,9 @@ export class UserService {
   }
 
   findAll(
-    paginator: PaginatorArgs,
-    sorting: SortArgs<User>,
-    filter: FilterArgs,
+    paginator?: PaginatorArgs,
+    sorting?: SortArgs<User>,
+    filter?: FilterArgs,
   ) {
     const queryBuilder = this.userRepository
       .createQueryBuilder('user')
@@ -32,7 +32,6 @@ export class UserService {
         .offset(paginator.page * paginator.per_page)
         .limit(paginator.per_page);
     }
-
     return queryBuilder.getMany();
   }
 
