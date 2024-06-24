@@ -4,10 +4,10 @@
 
 ## Sumário
 - [Descrição](#Descrição)
-- [Instalação e execução](#Instalação%20e%20execução)
+- [Instalação e execução](#instalação-e-execução)
 - [Docker](#Docker)
 - [Testes](#Testes)
-- [Paginação, filtros e ordenação](#Paginação,%20filtros%20e%20ordenação)
+- [Paginação, filtros e ordenação](#paginação,-filtros-e-ordenação)
 - [Requisitos](#Requisitos)
 
 ## Descrição
