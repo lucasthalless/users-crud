@@ -168,7 +168,7 @@ Foi utilizada a biblioteca [nestjs-graphql-tools](https://github.com/Adrinalin4i
 
 ```
 {
-	getUsers(paginate: {per_page:1, page: 0}){
+  getUsers(paginate: {per_page:1, page: 0}){
     id
     name
     email
@@ -186,7 +186,7 @@ os filtros, que devem seguir a formatação ([documentação ↗️](https://git
 
 ```
 {
-	getUsers(where: {name: {eq: "joao"}}){
+  getUsers(where: {name: {eq: "joao"}}){
     id
     name
     email
@@ -204,7 +204,7 @@ e a ordenação, que deve seguir a formatação ([documentação ↗️](https:/
 
 ```
 {
-	getUsers(order_by: {id: ASC}){
+  getUsers(order_by: {id: ASC}){
     id
     name
     email
