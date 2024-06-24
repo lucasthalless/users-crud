@@ -134,7 +134,14 @@ A API foi dockerizada para os ambientes de produção e de desenvolvimento, util
 
 ## Testes
 
-A aplicação possui testes end-2-end, que podem ser executados com o seguinte comando:
+A aplicação possui testes end-2-end, que podem ser executados com os seguintes comandos:
+
+```bash
+# test database
+$ docker-compose -f docker-compose.test.yaml up --build
+```
+
+com o banco de dados para teste rodando, é possível executar os testes:
 
 ```bash
 # e2e tests
