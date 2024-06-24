@@ -20,6 +20,7 @@ export class UserResolver {
     private userSettingsService: UserSettingsService,
   ) {}
 
+  // TODO: fix filter 'like' param
   @Query(() => [User], { name: 'getUsers', nullable: true })
   findAll(
     @Paginator() paginator: PaginatorArgs,
