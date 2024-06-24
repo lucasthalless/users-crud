@@ -2,13 +2,21 @@
 <!-- <a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a> -->
 </p>
 
+## Sumário
+- [Descrição](#Descrição)
+- [Instalação e execução](#Instalação%20e%20execução)
+- [Docker](#Docker)
+- [Testes](#Testes)
+- [Paginação, filtros e ordenação](#Paginação,%20filtros%20e%20ordenação)
+- [Requisitos](#Requisitos)
+
 ## Descrição
 
 CRUD de usuários em GraphQL utilizando NestJS, TypeORM e MySQL.
 
 Os usuários possuem seus dados de nome, email e senha junto com possíveis configurações da sua conta em um sistema. Essa configuração é armazenada no banco de dados através de um relacionamento um-para-um. A arquitetura do projeto foi criada a partir da CLI do NestJS.
 
-## Instalação / Execução
+## Instalação e execução
 
 Clone esse repositório e dentro dele execute:
 
@@ -210,7 +218,7 @@ e a ordenação, que deve seguir a formatação ([documentação ↗️](https:/
 }
 ```
 
-## Requisitos / To do
+## Requisitos
 
 - [x] Api Graphql com NestJS
 - [x] Crud de Usuarios (com Graphql)
