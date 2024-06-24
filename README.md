@@ -7,7 +7,7 @@
 - [Instalação e execução](#instalação-e-execução)
 - [Docker](#Docker)
 - [Testes](#Testes)
-- [Paginação, filtros e ordenação](#paginação,-filtros-e-ordenação)
+- [Paginação, filtros e ordenação](#paginação-filtros-e-ordenação)
 - [Requisitos](#Requisitos)
 
 ## Descrição
