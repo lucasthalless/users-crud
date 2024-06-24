@@ -144,8 +144,14 @@ $ docker-compose -f docker-compose.test.yaml up --build
 com o banco de dados para teste rodando, é possível executar os testes:
 
 ```bash
-# e2e tests
+# testes unitários
+$ npm run test
+
+# testes e2e
 $ npm run test:e2e
+
+# cobertura de testes
+$ npm run test:cov
 ```
 
 ## Paginação, filtros e ordenação
