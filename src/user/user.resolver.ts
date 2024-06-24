@@ -1,5 +1,7 @@
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
+  Filter,
+  FilterArgs,
   Paginator,
   PaginatorArgs,
   SortArgs,
@@ -21,9 +23,10 @@ export class UserResolver {
   @Query(() => [User], { name: 'getUsers', nullable: true })
   findAll(
     @Paginator() paginator: PaginatorArgs,
+    @Filter(() => User) filter: FilterArgs,
     @Sorting(() => User) sorting: SortArgs<User>,
   ) {
-    return this.userService.findAll(paginator, sorting);
+    return this.userService.findAll(paginator, sorting, filter);
   }
 
   @Query(() => User, { name: 'getUser', nullable: true })
