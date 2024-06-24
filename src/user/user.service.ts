@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { FilterArgs, PaginatorArgs, SortArgs } from 'nestjs-graphql-tools';
 import { Repository } from 'typeorm';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
@@ -16,8 +17,23 @@ export class UserService {
     return this.userRepository.save(newUser);
   }
 
-  findAll() {
-    return this.userRepository.find({ relations: ['settings'] });
+  findAll(
+    paginator: PaginatorArgs,
+    sorting: SortArgs<User>,
+    filter: FilterArgs,
+  ) {
+    const queryBuilder = this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.settings', 'settings')
+      .where(filter)
+      .orderBy(sorting);
+    if (paginator) {
+      queryBuilder
+        .offset(paginator.page * paginator.per_page)
+        .limit(paginator.per_page);
+    }
+
+    return queryBuilder.getMany();
   }
 
   findOne(id: number) {

@@ -141,6 +141,62 @@ A aplicação possui testes end-2-end, que podem ser executados com o seguinte c
 $ npm run test:e2e
 ```
 
+## Paginação, filtros e ordenação
+
+Foi utilizada a biblioteca [nestjs-graphql-tools](https://github.com/Adrinalin4ik/Nestjs-Graphql-Tools) para configurar na query getUser a paginação, que deve seguir a formatação ([documentação ↗️](https://github.com/Adrinalin4ik/Nestjs-Graphql-Tools?tab=readme-ov-file#pagination)):
+
+```
+{
+	getUsers(paginate: {per_page:1, page: 0}){
+    id
+    name
+    email
+    password
+    settings {
+      userId
+      receiveEmails
+      receiveNotifications
+    }
+  }
+}
+```
+
+os filtros, que devem seguir a formatação ([documentação ↗️](https://github.com/Adrinalin4ik/Nestjs-Graphql-Tools?tab=readme-ov-file#filters)):
+
+```
+{
+	getUsers(where: {name: {eq: "joao"}}){
+    id
+    name
+    email
+    password
+    settings {
+      userId
+      receiveEmails
+      receiveNotifications
+    }
+  }
+}
+```
+
+e a ordenação, que deve seguir a formatação ([documentação ↗️](https://github.com/Adrinalin4ik/Nestjs-Graphql-Tools?tab=readme-ov-file#sorting)):
+
+```
+{
+	getUsers(order_by: {id: ASC}){
+    id
+    name
+    email
+    password
+    settings {
+      userId
+      receiveEmails
+      receiveNotifications
+    }
+  }
+}
+```
+
 ## Requisitos / To do
 
 - [x] Api Graphql com NestJS
@@ -149,4 +205,4 @@ $ npm run test:e2e
 - [x] Estruturação de entity e db com typeorm
 - [x] Imagem Docker
 - [x] Testes com Jest
-- [ ] Paginação, Filtros e Ordenacão na Query Graphql
+- [x] Paginação, Filtros e Ordenacão na Query Graphql
