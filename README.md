@@ -2,6 +2,8 @@
 <!-- <a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a> -->
 </p>
 
+While building a Users CRUD with NestJS, GraphQL, REST, TypeORM, PostgreSQL, and Docker, I dealt with API failures, database connection/configuration problems, TypeORM query or migration errors, docker containerization and networking problems. This project was made within a deadline for a job application and I was responsible to communicate the progress, decisions and development time of the features.
+
 ## Sumário
 - [Descrição](#Descrição)
 - [Instalação e execução](#instalação-e-execução)
